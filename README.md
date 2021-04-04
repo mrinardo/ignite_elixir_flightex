@@ -38,6 +38,12 @@ iex(5)> Flightex.create_booking("27b76e60-4a65-468d-8f51-6c7db5d433e1", booking_
 iex(6)> Flightex.get_booking("5757a69e-b4d0-48af-918c-0c0f656f697e")
 ```
 
+### Generating CSV report file
+
+```elixir
+iex(7)> Flightex.generate_report(~D[2021-04-02],~D[2021-04-02])
+```
+
 ## Tests
 
 You can also run the tests script in the terminal (outside `iex`):
