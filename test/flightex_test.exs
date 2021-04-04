@@ -96,4 +96,20 @@ defmodule FlightexTest do
       assert response == expected_response
     end
   end
+
+  describe "generate_report/3" do
+    test "generates the report", %{
+      user_parameters: user_parameters,
+      booking_parameters: booking_parameters
+    } do
+      {:ok, id_usuario} = Flightex.create_user(user_parameters)
+      Flightex.create_booking(id_usuario, booking_parameters)
+
+      response = Flightex.generate_report(~D[2021-04-02], ~D[2021-04-02])
+
+      expected_response = {:ok, "Report generated successfully"}
+
+      assert response == expected_response
+    end
+  end
 end

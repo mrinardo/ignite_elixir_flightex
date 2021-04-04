@@ -6,13 +6,13 @@ defmodule Flightex.Bookings.AgentTest do
   alias Flightex.Bookings.Agent, as: BookingAgent
   alias Flightex.Bookings.Booking
 
+  setup do
+    BookingAgent.start_link()
+
+    :ok
+  end
+
   describe "save/1" do
-    setup do
-      BookingAgent.start_link()
-
-      :ok
-    end
-
     test "saves a new booking" do
       booking = build(:booking)
 
@@ -25,12 +25,6 @@ defmodule Flightex.Bookings.AgentTest do
   end
 
   describe "get/1" do
-    setup do
-      BookingAgent.start_link()
-
-      :ok
-    end
-
     test "when the provided id is found, returns the booking" do
       booking = build(:booking)
       BookingAgent.save(booking)
@@ -60,12 +54,6 @@ defmodule Flightex.Bookings.AgentTest do
   end
 
   describe "get_all/0" do
-    setup do
-      BookingAgent.start_link()
-
-      :ok
-    end
-
     test "returns all bookings" do
       booking = build(:booking)
       BookingAgent.save(booking)
@@ -81,6 +69,28 @@ defmodule Flightex.Bookings.AgentTest do
           id_usuario: booking.id_usuario
         }
       }
+
+      assert response == expected_response
+    end
+  end
+
+  describe "get_all_by_date/2" do
+    test "returns all bookings" do
+      booking = build(:booking)
+      BookingAgent.save(booking)
+
+      response = BookingAgent.get_all_by_date(~D[2021-04-02], ~D[2021-04-02])
+
+      expected_response = [
+        {booking.id,
+         %Booking{
+           cidade_destino: "Berlim",
+           cidade_origem: "São Paulo",
+           data_completa: ~N[2021-04-02 17:13:00],
+           id: booking.id,
+           id_usuario: booking.id_usuario
+         }}
+      ]
 
       assert response == expected_response
     end
